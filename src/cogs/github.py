@@ -15,17 +15,18 @@ coloredlogs.install(logger=log)
 class Github(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
+        self.stats_task.start()
 
     @commands.Cog.listener()
     async def on_ready(self):
         log.warn(f"{self.__class__.__name__} Cog has been loaded")
 
-    @tasks.loop(seconds=30, reconnect=False)
-    async def notify_task(self):
+    @tasks.loop(seconds=1800, reconnect=False)
+    async def stats_task(self):
         await self.bot.wait_until_ready()
         res = await api_call(f"{os.getenv('API_BASE_URL')}repos/waycrate/swhkd")
         chan = self.bot.get_channel(int(os.getenv("STATS_CHANNEL")))
-        chan.edit(name=f"Stars: {res['stargazers_count']} ⭐")
+        await chan.edit(name=f"Stars: {res['stargazers_count']} ⭐")
 
 
     @commands.slash_command(guild_ids=test_guilds)
