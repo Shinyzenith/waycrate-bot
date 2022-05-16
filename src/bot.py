@@ -15,7 +15,7 @@ class WaycrateBot(commands.Bot):
         intents.members = True
         # intents.message_content = True
 
-        super().__init__(reload=True, intents=intents) # Live reload of cogs on edits.
+        super().__init__(reload=True, intents=intents)
 
         self.log = logging.getLogger("WaycrateBot")
         coloredlogs.install(logger=self.log)
@@ -35,4 +35,7 @@ class WaycrateBot(commands.Bot):
         super().run(os.getenv("BOT_TOKEN"))
 
 bot = WaycrateBot()
+@bot.event
+async def on_ready():
+    await bot.change_presence(status=disnake.Status.idle, activity=disnake.Game("Waycrate"))
 bot.run()

@@ -20,7 +20,6 @@ class Github(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         log.warn(f"{self.__class__.__name__} Cog has been loaded")
-        await self.bot.change_presence(status=disnake.Status.idle, activity=disnake.Game("Waycrate"))
 
     @tasks.loop(seconds=1800, reconnect=False)
     async def stats_task(self):
