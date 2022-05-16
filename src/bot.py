@@ -12,8 +12,6 @@ class WaycrateBot(commands.Bot):
     def __init__(self):
         load_dotenv()
         intents = disnake.Intents.default()
-        intents.members = True
-        # intents.message_content = True
 
         super().__init__(reload=True, intents=intents)
 
