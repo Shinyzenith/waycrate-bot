@@ -39,21 +39,22 @@ class Github(commands.Cog):
         field: The type of information you're looking for.
         """
         res = await api_call(f"{os.getenv('API_BASE_URL')}repos/waycrate/swhkd")
-        if field == "stars":
-            stars_embed = disnake.Embed(
-                title="Stars", description=f"{res['stargazers_count']} stars", color=disnake.Color.from_rgb(221, 161, 4))
-            await inter.response.send_message(embed=stars_embed)
-        elif field == "forks":
-            forks_embed = disnake.Embed(
-                title="Forks", description=f"{res['forks_count']} forks", color=disnake.Color.from_rgb(221, 161, 4))
-            await inter.response.send_message(embed=forks_embed)
-        elif field == "total":
-            res2 = await api_call(f"{os.getenv('API_BASE_URL')}orgs/waycrate/repos")
-            embed = disnake.Embed(title="Total Stats", color=disnake.Color.from_rgb(221, 161, 4))
-            embed.set_thumbnail(url="https://waycrate.github.io/assets/img/waycrate-logo.png")
-            for x in res2:
-             embed.add_field(name=x["name"], value=f"{x['stargazers_count']} stars")
-            await inter.response.send_message(embed=embed)
+        match field:
+            case "stars":
+                stars_embed = disnake.Embed(
+                    title="Stars", description=f"{res['stargazers_count']} stars", color=disnake.Color.from_rgb(221, 161, 4))
+                await inter.response.send_message(embed=stars_embed)
+            case "forks":
+                forks_embed = disnake.Embed(
+                    title="Forks", description=f"{res['forks_count']} forks", color=disnake.Color.from_rgb(221, 161, 4))
+                await inter.response.send_message(embed=forks_embed)
+            case "total":
+                res2 = await api_call(f"{os.getenv('API_BASE_URL')}orgs/waycrate/repos")
+                embed = disnake.Embed(title="Total Stats", color=disnake.Color.from_rgb(221, 161, 4))
+                embed.set_thumbnail(url="https://waycrate.github.io/assets/img/waycrate-logo.png")
+                for x in res2:
+                 embed.add_field(name=x["name"], value=f"{x['stargazers_count']} stars")
+                await inter.response.send_message(embed=embed)
 
 async def api_call(call_url):
     async with aiohttp.ClientSession() as session:
